@@ -61,6 +61,7 @@ GtkWidget* create_labeled_combo(const gchar *label_text, const gchar *option1, c
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo), option1);
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo), option2);
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0); // Выбираем первый элемент
+   gtk_widget_set_name(combo, "main-combo");
     
     gtk_widget_set_hexpand(combo, TRUE);
     gtk_box_pack_start(GTK_BOX(hbox), combo, TRUE, TRUE, 0);
@@ -155,44 +156,148 @@ void on_window_resize(GtkWidget *widget, GdkRectangle *allocation, gpointer data
 void apply_css() {
     GtkCssProvider *provider = gtk_css_provider_new();
     const gchar *css = 
-        "#aspect-container {"
-        "   margin: 20px;"                            // Увеличим отступ
-        "   padding: 20px;"                           // Добавим внутренний отступ
-        "}"
-        
-        "label {"                                     // Стиль для всех подписей
-        "   font-weight: bold;"
-        "   color: #333;"
-        "   min-width: 80px;"                         // Фиксированная ширина
-        "}"
-        
-        "entry {"                                     // Стиль текстовых полей
-        "   padding: 8px;"
-        "   border: 1px solid #ccc;"
-        "   border-radius: 4px;"
-        "   background: white;"
-        "}"
-        
-        "entry:focus {"                               // Стиль при фокусе
-        "   border-color: #4a90e2;"
-        "   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);"
-        "}"
-        
-        "combobox {"                                  // Стиль выпадающего списка
-        "   padding: 5px;"
-        "   border: 1px solid #ccc;"
-        "   border-radius: 4px;"
-        "   background: white;"
-        "}"
-        
-        "combobox:focus {"
-        "   border-color: #4a90e2;"
-        "   box-shadow: 0 0 0 2px rgwba(74, 144, 226, 0.2);"
-        "}"
-        
-        "combobox arrow {"
-        "   color: #666;"
-        "}";
+    /* ОСНОВНЫЕ СТИЛИ */
+    "window {"
+    "   background: #000;"
+    "}"
+    
+    /* ГЛАВНЫЙ КОНТЕЙНЕР */
+    "#aspect-container {"
+    "   background: #1a1a1a;"
+    "   border: 2px solid #333;"
+    "   border-radius: 12px;"
+    "   margin: 20px;"
+    "   padding: 25px;"
+    "}"
+    
+    /* СЕТКА */
+    "grid {"
+    "   background: transparent;"
+    "}"
+    
+    /* ПОДПИСИ */
+    "label {"
+    "   color: #fff;"
+    "   font-weight: bold;"
+    "   font-size: 14px;"
+    "   min-width: 85px;"
+    "   background: transparent;"
+    "}"
+    
+    /* ПОЛЯ ВВОДА */
+    "entry {"
+    "   background: #2d2d2d;"
+    "   color: #fff;"
+    "   border: 2px solid #444;"
+    "   border-radius: 8px;"
+    "   padding: 10px 12px;"
+    "   font-size: 14px;"
+    "   box-shadow: none;"
+    "   outline: none;"
+    "}"
+    
+    "entry:focus {"
+    "   border-color: #4a90e2;"
+    "   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);"
+    "}"
+    
+    /* КНОПКА */
+    "button {"
+    "   background: linear-gradient(145deg, #2d2d2d, #252525);"
+    "   color: #fff;"
+    "   border: 2px solid #444;"
+    "   border-radius: 8px;"
+    "   padding: 12px 24px;"
+    "   font-weight: bold;"
+    "   font-size: 14px;"
+    "   box-shadow: 0 2px 4px rgba(0,0,0,0.3);"
+    "   transition: all 0.2s ease;"
+    "}"
+    
+    "button:hover {"
+    "   background: linear-gradient(145deg, #3d3d3d, #353535);"
+    "   border-color: #555;"
+    "   transform: translateY(-1px);"
+    "}"
+    
+    "button:active {"
+    "   background: linear-gradient(145deg, #252525, #1d1d1d);"
+    "   transform: translateY(0);"
+    "}"
+    
+    /* COMBOBOX - ОСНОВНОЙ КОНТЕЙНЕР */
+    "combobox {"
+    "   background: #2d2d2d;"
+    "   color: #fff;"
+    "   border: 2px solid #444;"
+    "   border-radius: 8px;"
+    "   padding: 5px;"
+    "   min-height: 40px;"
+    "}"
+    
+    /* КНОПКА COMBOBOX (стрелка) */
+    "combobox button {"
+    "   background: #3d3d3d;"
+    "   border: none;"
+    "   border-left: 2px solid #444;"
+    "   border-radius: 0 6px 6px 0;"
+    "   min-width: 30px;"
+    "}"
+    
+    /* ТЕКСТ В COMBOBOX */
+    "combobox box {"
+    "   padding: 0 12px;"
+    "   background: transparent;"
+    "}"
+    
+    "combobox box label {"
+    "   color: #fff;"
+    "   font-size: 14px;"
+    "   background: transparent;"
+    "}"
+    
+    /* СТРЕЛКА COMBOBOX */
+    "combobox arrow {"
+    "   color: #ccc;"
+    "   -gtk-icon-size: 16px;"
+    "}"
+    
+    /* ВЫПАДАЮЩЕЕ МЕНЮ */
+    "combobox menu {"
+    "   background: #2d2d2d;"
+    "   border: 2px solid #444;"
+    "   border-radius: 8px;"
+    "   padding: 8px 0;"
+    "   margin-top: 5px;"
+    "}"
+    
+    "combobox menu menuitem {"
+    "   background: transparent;"
+    "   color: #fff;"
+    "   padding: 12px 20px;"
+    "   border: none;"
+    "   min-height: 20px;"
+    "}"
+    
+    "combobox menu menuitem:hover {"
+    "   background: #3d3d3d;"
+    "}"
+    
+    "combobox menu menuitem:active {"
+    "   background: #4a90e2;"
+    "}"
+    
+    /* СТАТУСНЫЙ ТЕКСТ */
+    "#status-label {"
+    "   color: #4a90e2;"
+    "   font-style: italic;"
+    "   font-size: 14px;"
+    "   background: rgba(74, 144, 226, 0.15);"
+    "   padding: 8px 16px;"
+    "   border-radius: 8px;"
+    "   margin-right: 15px;"
+    "   border: 1px solid rgba(74, 144, 226, 0.3);"
+    "}";
     
     gtk_css_provider_load_from_data(provider, css, -1, NULL);
     gtk_style_context_add_provider_for_screen(
@@ -203,7 +308,6 @@ void apply_css() {
 }
 
 int main(int argc, char *argv[]) {
-    read_file();
     gtk_init(&argc, &argv);
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
