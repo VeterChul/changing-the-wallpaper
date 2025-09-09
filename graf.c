@@ -1,4 +1,5 @@
 #include  <gtk/gtk.h>
+#include <stdio.h>
 
 // Глобальные переменные для виджетов (или передавать через user_data)
 GtkWidget *status_label = NULL;
@@ -134,6 +135,7 @@ GtkWidget* create_aspect_container() {
     
     // Устанавливаем минимальный размер
     gtk_widget_set_size_request(aspect_frame, 1600, 900); // Минимум 16:9
+    gtk_frame_set_shadow_type(GTK_FRAME(aspect_frame), GTK_SHADOW_NONE);
     
     return aspect_frame;
 }
@@ -145,16 +147,17 @@ void on_window_resize(GtkWidget *widget, GdkRectangle *allocation, gpointer data
     GtkAllocation container_alloc;
     gtk_widget_get_allocation(container, &container_alloc);
     
-    g_print("Размер окна: %dx%d | Размер контейнера: %dx%d\n",
-           allocation->width, allocation->height,
-           container_alloc.width, container_alloc.height);
+    //g_print("Размер окна: %dx%d | Размер контейнера: %dx%d\n",
+    //       allocation->width, allocation->height,
+    //       container_alloc.width, container_alloc.height);
 }
 
 void apply_css() {
     GtkCssProvider *provider = gtk_css_provider_new();
     const gchar *css = 
         "#aspect-container {"
-        "   margin: 10px;"                            // Отступ от краев окна
+        "   margin: 20px;"                            // Увеличим отступ
+        "   padding: 20px;"                           // Добавим внутренний отступ
         "}"
         
         "label {"                                     // Стиль для всех подписей
@@ -170,12 +173,12 @@ void apply_css() {
         "   background: white;"
         "}"
         
-         "entry:focus {"                               // Стиль при фокусе
+        "entry:focus {"                               // Стиль при фокусе
         "   border-color: #4a90e2;"
         "   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);"
         "}"
         
-         "combobox {"                                  // Стиль выпадающего списка
+        "combobox {"                                  // Стиль выпадающего списка
         "   padding: 5px;"
         "   border: 1px solid #ccc;"
         "   border-radius: 4px;"
@@ -184,7 +187,7 @@ void apply_css() {
         
         "combobox:focus {"
         "   border-color: #4a90e2;"
-        "   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);"
+        "   box-shadow: 0 0 0 2px rgwba(74, 144, 226, 0.2);"
         "}"
         
         "combobox arrow {"
@@ -200,6 +203,7 @@ void apply_css() {
 }
 
 int main(int argc, char *argv[]) {
+    read_file();
     gtk_init(&argc, &argv);
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
