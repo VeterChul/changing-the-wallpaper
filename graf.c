@@ -154,9 +154,41 @@ void apply_css() {
     GtkCssProvider *provider = gtk_css_provider_new();
     const gchar *css = 
         "#aspect-container {"
-        "   background-color: rgba(255, 0, 0, 0.2);"  // Полупрозрачный красный
-        "   border: 2px dashed blue;"                 // Синяя пунктирная граница
         "   margin: 10px;"                            // Отступ от краев окна
+        "}"
+        
+        "label {"                                     // Стиль для всех подписей
+        "   font-weight: bold;"
+        "   color: #333;"
+        "   min-width: 80px;"                         // Фиксированная ширина
+        "}"
+        
+        "entry {"                                     // Стиль текстовых полей
+        "   padding: 8px;"
+        "   border: 1px solid #ccc;"
+        "   border-radius: 4px;"
+        "   background: white;"
+        "}"
+        
+         "entry:focus {"                               // Стиль при фокусе
+        "   border-color: #4a90e2;"
+        "   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);"
+        "}"
+        
+         "combobox {"                                  // Стиль выпадающего списка
+        "   padding: 5px;"
+        "   border: 1px solid #ccc;"
+        "   border-radius: 4px;"
+        "   background: white;"
+        "}"
+        
+        "combobox:focus {"
+        "   border-color: #4a90e2;"
+        "   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);"
+        "}"
+        
+        "combobox arrow {"
+        "   color: #666;"
         "}";
     
     gtk_css_provider_load_from_data(provider, css, -1, NULL);
@@ -166,7 +198,6 @@ void apply_css() {
         GTK_STYLE_PROVIDER_PRIORITY_APPLICATION
     );
 }
-
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
